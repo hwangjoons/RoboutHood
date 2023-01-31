@@ -17,6 +17,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import SearchScreen from '../screens/SearchScreen';
 import HomeScreen from '../screens/HomeScreen';
 import PortfolioScreen from '../screens/PortfolioScreen';
+import LoadingScreen from '../screens/LoadingScreen';
 
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -45,6 +46,7 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="Loading" component={LoadingScreen} options={{ title: 'Loading' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
