@@ -4,7 +4,6 @@ import Lottie from 'lottie-react-native';
 
 import { StyleSheet, SafeAreaView, Image } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 export default function LoadingScreen() {

@@ -5,6 +5,8 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
+import Lottie from 'lottie-react-native';
+
 export default function SearchScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [stockInput, setStockInput] = useState('');
 
@@ -15,23 +17,53 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'TabOne'
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
+    <Lottie source={require('/Users/joonhwang/myGit/RoboutHood/RoboutHood/39701-robot-bot-3d.json')} autoPlay loop />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View>
+        <TextInput
+        value = {stockInput}
+        onChangeText={input => setStockInput(input)}
+        placeholder="Enter stock to search..."
+        style={styles.searchBar}
+        />
+        <TextInput
+        value = {stockInput}
+        onChangeText={input => setStockInput(input)}
+        placeholder="Enter industry of stock..."
+        style={styles.searchBar}
+        />
+        <TextInput
+        value = {stockInput}
+        onChangeText={input => setStockInput(input)}
+        placeholder="Enter price of stock..."
+        style={styles.searchBar}
+        />
+        <TouchableOpacity
+          title="Search"
+          onPress={handleSubmit}
+          // style={styles.submitButton}
+        >
+        <Text style={styles.submitButton}>Search</Text>
+        </TouchableOpacity>
+      </View>
+    {/* <View style={styles.container}>
       <TextInput
       value = {stockInput}
       onChangeText={input => setStockInput(input)}
-      placeholder="Enter stock to search..."
+      placeholder="Be creative with your search.."
       style={styles.searchBar}
       />
       <TouchableOpacity
-        title="Search"
+        title="Submit"
         onPress={handleSubmit}
         // style={styles.submitButton}
-        >
-          <Text style={styles.submitButton}>Search</Text>
+      >
+      <Text style={styles.submitButton}>Search</Text>
       </TouchableOpacity>
-    </View>
+    </View> */}
     </TouchableWithoutFeedback>
+    </View>
   );
 }
 
