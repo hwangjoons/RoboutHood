@@ -1,11 +1,12 @@
 import { warmUpAsync } from 'expo-web-browser';
-import React, { useState, useEffect } from 'react';import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';import { Animated, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, TextInput, Image } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
+
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
 import Lottie from 'lottie-react-native';
+import * as Animatable from 'react-native-animatable';
 
 export default function SearchScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [stockInput, setStockInput] = useState('');
@@ -16,62 +17,70 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'TabOne'
     }
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+  }
+
   return (
-    <View style={styles.container}>
-    <Lottie source={require('/Users/joonhwang/myGit/RoboutHood/RoboutHood/39701-robot-bot-3d.json')} autoPlay loop />
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View>
-        <TextInput
-        value = {stockInput}
-        onChangeText={input => setStockInput(input)}
-        placeholder="Enter stock to search..."
-        style={styles.searchBar}
+      <View style={styles.container}>
+        <Lottie
+        style={styles.logo}
+        options={defaultOptions}
+        height={100}
+        width={100}
+        source={require('/Users/joonhwang/myGit/RoboutHood/RoboutHood/39701-robot-bot-3d.json')} autoPlay loop
         />
-        <TextInput
-        value = {stockInput}
-        onChangeText={input => setStockInput(input)}
-        placeholder="Enter industry of stock..."
-        style={styles.searchBar}
-        />
-        <TextInput
-        value = {stockInput}
-        onChangeText={input => setStockInput(input)}
-        placeholder="Enter price of stock..."
-        style={styles.searchBar}
-        />
-        <TouchableOpacity
-          title="Search"
-          onPress={handleSubmit}
-          // style={styles.submitButton}
-        >
-        <Text style={styles.submitButton}>Search</Text>
-        </TouchableOpacity>
+        <Animatable.View style={styles.formContainer}>
+          <TextInput
+          value = {stockInput}
+          onChangeText={input => setStockInput(input)}
+          placeholder="Enter stock to search..."
+          style={styles.searchBar}
+          />
+          <TextInput
+          value = {stockInput}
+          onChangeText={input => setStockInput(input)}
+          placeholder="Enter industry of stock..."
+          style={styles.searchBar}
+          />
+          <TextInput
+          value = {stockInput}
+          onChangeText={input => setStockInput(input)}
+          placeholder="Enter price of stock..."
+          style={styles.searchBar}
+          />
+          <TouchableOpacity
+            title="Search"
+            onPress={handleSubmit}
+            // style={styles.submitButton}
+          >
+            <Text style={styles.submitButton}>Search</Text>
+          </TouchableOpacity>
+        </Animatable.View>
       </View>
-    {/* <View style={styles.container}>
-      <TextInput
-      value = {stockInput}
-      onChangeText={input => setStockInput(input)}
-      placeholder="Be creative with your search.."
-      style={styles.searchBar}
-      />
-      <TouchableOpacity
-        title="Submit"
-        onPress={handleSubmit}
-        // style={styles.submitButton}
-      >
-      <Text style={styles.submitButton}>Search</Text>
-      </TouchableOpacity>
-    </View> */}
     </TouchableWithoutFeedback>
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  formContainer: {
+    // height: 100,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    // height: 100,
+    // flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   title: {
     fontSize: 20,
@@ -97,5 +106,6 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     color: '#5ced73',
+    justifyContent: 'center',
   }
 });
