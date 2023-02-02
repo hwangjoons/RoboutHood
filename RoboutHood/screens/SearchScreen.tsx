@@ -10,6 +10,7 @@ import * as Animatable from 'react-native-animatable';
 
 import axios from 'axios';
 
+
 export default function SearchScreen({ navigation: { navigate } }: RootTabScreenProps<'TabOne'>) {
   const [stockInput, setStockInput] = useState('');
   const [industryInput, setIndustryInput] = useState('');

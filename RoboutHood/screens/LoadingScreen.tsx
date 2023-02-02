@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 import Lottie from 'lottie-react-native';
@@ -10,7 +11,30 @@ export default function LoadingScreen({ navigation: { navigate }, route: { param
   const stockTicker = params.stockInput;
   const stockIndustry = params.industryInput;
   const stockPrice = params.priceInput;
-  console.log(stockTicker, stockIndustry, stockPrice);
+
+  const [loadingText, setLoadingText] = useState('Generating Content')
+
+  setTimeout(() => {
+    setLoadingText("Coming through ...");
+  }, 3000);
+
+  const searchStock = async (stockTicker, stockIndustry, stockPrice) => {
+    try {
+      const searchResult = await axios.post(`http://192.168.1.159:3003/search`, {
+        ticker: stockTicker,
+        industry: stockIndustry,
+        price: stockPrice
+      })
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    setLoadingText('Generating Content')
+    searchStock(stockTicker, stockIndustry, stockPrice);
+  }, [stockTicker, stockIndustry, stockPrice])
   // setTimeOut(() => {
 
   // }, 5000);
