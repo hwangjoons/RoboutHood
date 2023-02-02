@@ -6,8 +6,11 @@ import { StyleSheet, SafeAreaView, Image } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 
-export default function LoadingScreen() {
-
+export default function LoadingScreen({ navigation: { navigate }, route: { params }}) {
+  const stockTicker = params.stockInput;
+  const stockIndustry = params.industryInput;
+  const stockPrice = params.priceInput;
+  console.log(stockTicker, stockIndustry, stockPrice);
   // setTimeOut(() => {
 
   // }, 5000);

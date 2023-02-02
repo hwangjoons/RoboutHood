@@ -8,12 +8,22 @@ import { RootTabScreenProps } from '../types';
 import Lottie from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 
-export default function SearchScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+import axios from 'axios';
+
+export default function SearchScreen({ navigation: { navigate } }: RootTabScreenProps<'TabOne'>) {
   const [stockInput, setStockInput] = useState('');
+  const [industryInput, setIndustryInput] = useState('');
+  const [priceInput, setPriceInput] = useState('');
 
   const handleSubmit = async () => {
-    if (input) {
+    if (stockInput || industryInput || priceInput) {
       Keyboard.dismiss();
+      console.log(stockInput, industryInput, priceInput);
+      navigate("Loading", {
+        stockInput: stockInput,
+        industryInput: industryInput,
+        priceInput: priceInput
+      })
     }
   };
 
@@ -40,14 +50,14 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'TabOne'
           style={styles.searchBar}
           />
           <TextInput
-          value = {stockInput}
-          onChangeText={input => setStockInput(input)}
+          value = {industryInput}
+          onChangeText={input2 => setIndustryInput(input2)}
           placeholder="Enter industry of stock..."
           style={styles.searchBar}
           />
           <TextInput
-          value = {stockInput}
-          onChangeText={input => setStockInput(input)}
+          value = {priceInput}
+          onChangeText={input3 => setPriceInput(input3)}
           placeholder="Enter price of stock..."
           style={styles.searchBar}
           />

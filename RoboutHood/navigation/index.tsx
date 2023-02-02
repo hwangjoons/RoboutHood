@@ -4,11 +4,11 @@
  *
  */
 import { FontAwesome } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Pressable, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -62,13 +62,30 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  // const tabBarHeight = useBottomTabBarHeight();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      // initialRouteName="TabOne"
+      tabBarOptions={{
+        showLabel: false,
+      }}
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}>
+        tabBarStyle: {
+          // showLabel: false,
+          position: 'absolute',
+          bottom: 25,
+          left: 20,
+          right: 20,
+          elevation: 0,
+          backgroundColor: '#ffffff',
+          borderRadius: 15,
+          height: 70,
+          // borderColor: 'black'
+        }
+      }}
+      >
       <BottomTab.Screen
         name="Search"
         component={SearchScreen}
