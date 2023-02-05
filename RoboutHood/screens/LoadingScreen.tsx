@@ -7,16 +7,18 @@ import { StyleSheet, SafeAreaView, Image } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 
+import ResultScreen from './ResultScreen';
+
 export default function LoadingScreen({ navigation: { navigate }, route: { params }}) {
   const stockTicker = params.stockInput;
   const stockIndustry = params.industryInput;
   const stockPrice = params.priceInput;
 
-  const [loadingText, setLoadingText] = useState('Generating Content')
+  // const [loadingText, setLoadingText] = useState('Generating Content')
 
-  setTimeout(() => {
-    setLoadingText("Coming through ...");
-  }, 3000);
+  // setTimeout(() => {
+  //   setLoadingText("Coming through ...");
+  // }, 3000);
 
   const searchStock = async (stockTicker, stockIndustry, stockPrice) => {
     try {
@@ -25,14 +27,14 @@ export default function LoadingScreen({ navigation: { navigate }, route: { param
         industry: stockIndustry,
         price: stockPrice
       })
-
+      navigate("Result", {search: searchResult.data })
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    setLoadingText('Generating Content')
+    // setLoadingText('Generating Content')
     searchStock(stockTicker, stockIndustry, stockPrice);
   }, [stockTicker, stockIndustry, stockPrice])
   // setTimeOut(() => {
