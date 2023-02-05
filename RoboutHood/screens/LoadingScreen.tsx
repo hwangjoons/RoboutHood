@@ -14,11 +14,6 @@ export default function LoadingScreen({ navigation: { navigate }, route: { param
   const stockIndustry = params.industryInput;
   const stockPrice = params.priceInput;
 
-  // const [loadingText, setLoadingText] = useState('Generating Content')
-
-  // setTimeout(() => {
-  //   setLoadingText("Coming through ...");
-  // }, 3000);
 
   const searchStock = async (stockTicker, stockIndustry, stockPrice) => {
     try {
@@ -34,17 +29,13 @@ export default function LoadingScreen({ navigation: { navigate }, route: { param
   }
 
   useEffect(() => {
-    // setLoadingText('Generating Content')
     searchStock(stockTicker, stockIndustry, stockPrice);
   }, [stockTicker, stockIndustry, stockPrice])
-  // setTimeOut(() => {
 
-  // }, 5000);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Loading...</Text>
       <Lottie source={require('/Users/joonhwang/myGit/RoboutHood/RoboutHood/39701-robot-bot-3d.json')} autoPlay loop/>
-
+      <Text style={styles.title}>Loading...</Text>
     </View>
   );
 }
@@ -54,6 +45,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: "column"
   },
   title: {
     fontSize: 20,
