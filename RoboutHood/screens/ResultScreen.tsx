@@ -11,40 +11,36 @@ const Separator = () => <View style={styles.separator} />;
 
 export default function ResultScreen({ navigation: { navigate }, route: { params }}) {
   const search = params.search;
+  const stockTicker = params.ticker;
+  const stockIndustry = params.industry;
+  const stockPrice = params.price;
+
   const [generateResult, setGenerateResult] = useState(undefined);
+
   useEffect(() => {
-    console.log(search[0].text, 'in resultscreen');
+    // console.log(search[0].text, 'in resultscreen');
     setGenerateResult(search[0].text);
   }, [search])
-  // setTimeOut(() => {
 
-  // }, 5000);
 
   return (
     <TouchableWithoutFeedback>
       <View style={styles.container}>
         <View style={styles.smallContainer}>
-          <View style={styles.recordButton}>
-          <TouchableOpacity
-            title="Record"
-          >
-            <Text>Record</Text>
-          </TouchableOpacity>
-          </View>
           <Text style={styles.title}>{generateResult ? generateResult : null}</Text>
         </View>
         <Separator />
         <View style={styles.buttons}>
           <TouchableOpacity
-            title="Search More"
+            title="Favorite"
           >
-            <Text style={styles.button}>Search Again</Text>
+            <Text style={styles.button}>Favorite</Text>
           </TouchableOpacity>
           <TouchableOpacity
             title="Cancel"
             onPress={(() => navigate("Search"))}
           >
-            <Text style={styles.button}>Cancel</Text>
+            <Text style={styles.button}>Search Again</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -87,7 +83,7 @@ const styles = StyleSheet.create({
     marginRight: 40
   },
   recordButton: {
-    justifyContent: "flex-end"
+    justifyContent: "center"
   },
   separator: {
     marginVertical: 8,

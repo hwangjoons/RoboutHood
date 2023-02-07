@@ -13,7 +13,7 @@ export default function LoadingScreen({ navigation: { navigate }, route: { param
   const stockTicker = params.stockInput;
   const stockIndustry = params.industryInput;
   const stockPrice = params.priceInput;
-
+  const searchAgain = params.searchAgain;
 
   const searchStock = async (stockTicker, stockIndustry, stockPrice) => {
     try {
@@ -22,7 +22,12 @@ export default function LoadingScreen({ navigation: { navigate }, route: { param
         industry: stockIndustry,
         price: stockPrice
       })
-      navigate("Result", {search: searchResult.data })
+      navigate("Result", {
+        search: searchResult.data,
+        ticker: stockTicker,
+        industry: stockIndustry,
+        price: stockPrice
+      })
     } catch (error) {
       console.log(error);
     }
