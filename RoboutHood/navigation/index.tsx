@@ -77,6 +77,7 @@ const TabButton = (props) => {
   const {item, onPress, accessibilityState} = props;
   const focused = accessibilityState.selected;
   const viewRef = useRef(null);
+  const textRef = useRef(null);
 
   React.useEffect(() => {
     if (focused) {
@@ -84,11 +85,13 @@ const TabButton = (props) => {
         0: { scale: 3, rotate: '0deg' },
         1: { scale: 1.5, rotate: '360deg' }
       });
+      textRef.current.transitionTo({scale: 1});
     } else {
       viewRef.current.animate({
-        0: { scale: 3, rotate: '360deg' },
+        0: { scale: 1.5, rotate: '360deg' },
         1: { scale: 1.5, rotate: '0deg' }
       });
+      textRef.current.transitionTo({scale: 0});
     }
   }, [focused])
   return (
@@ -102,13 +105,18 @@ const TabButton = (props) => {
     duration={2000}
     style={styles.container}>
       <Icon type={item.type} name={item.activeIcon} color={focused ? GlobalColors.black : GlobalColors.white }/>
+      <Animatable.Text
+        style={styles.text}
+        ref={textRef}>
+          {item.label}
+      </Animatable.Text>
     </Animatable.View>
+
     </TouchableOpacity>
   )
 }
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-  // const tabBarHeight = useBottomTabBarHeight();
 
   return (
     <BottomTab.Navigator
@@ -129,24 +137,6 @@ function BottomTabNavigator() {
           backgroundColor: GlobalColors.primary
         }
       }}
-      // tabBarOptions={{
-      //   showLabel: false,
-      // }}
-      // screenOptions={{
-      //   tabBarActiveTintColor: Colors[colorScheme].tint,
-      //   tabBarStyle: {
-      //     // showLabel: false,
-      //     position: 'absolute',
-      //     bottom: 25,
-      //     left: 20,
-      //     right: 20,
-      //     elevation: 0,
-      //     backgroundColor: '#ffffff',
-      //     borderRadius: 15,
-      //     height: 70,
-      //     // borderColor: 'black'
-      //   }
-      // }}
       >
         {BottomTabArr.map((item, index) => {
           return(
@@ -171,6 +161,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  text: {
+    fontSize: 5,
+    color: GlobalColors.black,
+    textAlign: 'center'
   }
 });
 /**
