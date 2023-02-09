@@ -101,7 +101,7 @@ const TabButton = (props) => {
     ref={viewRef}
     duration={2000}
     style={styles.container}>
-      <Icon type={item.type} name={item.activeIcon} color={focused ? GlobalColors.primary : GlobalColors.white }/>
+      <Icon type={item.type} name={item.activeIcon} color={focused ? GlobalColors.black : GlobalColors.white }/>
     </Animatable.View>
     </TouchableOpacity>
   )
@@ -121,7 +121,12 @@ function BottomTabNavigator() {
           bottom: 16,
           right: 16,
           left: 16,
-          borderRadius: 20,
+          borderRadius: 10,
+          paddingBottom: 1,
+          shadowOffset: {width: -2, height: 4},
+          shadowOpacity: 0.2,
+          shadowRadius: 3,
+          backgroundColor: GlobalColors.primary
         }
       }}
       // tabBarOptions={{
