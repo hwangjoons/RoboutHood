@@ -22,6 +22,10 @@ import ResultScreen from '../screens/ResultScreen';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import Icon from 'react-native-vector-icons/Ionicons';
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import GlobalColors from '../assets/styling/GlobalColors';
 
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -59,8 +63,29 @@ function RootNavigator() {
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
+
+const BottomTabArr = [
+  { route: 'Search', label: 'Search', type: Icon.Ionicons, activeIcon: 'ios-search-sharp', inActiveIcon: 'ios-search-circle-sharp', component: SearchScreen },
+  { route: 'Home', label: 'Home', type: Icon.Ionicons, activeIcon: 'ios-school-outline', inActiveIcon: 'ios-school-sharp', component: HomeScreen },
+  { route: 'Portfolio', label: 'Portfolio', type: IconFontAwesome.FontAwesome, activeIcon: 'folder', inActiveIcon: 'folder-open', component: PortfolioScreen }
+];
+
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
+const TabButton = (props) => {
+  const {item, onPress, accessibilityState} = props;
+  const focused = accessibilityState.selected;
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.container}
+    >
+    <View style={styles.container}>
+      <Icon type={item.type} name={item.activeIcon} color={focused ? Colors.primary : Colors.primaryLite}/>
+    </View>
+    </TouchableOpacity>
+  )
+}
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
   // const tabBarHeight = useBottomTabBarHeight();
@@ -68,26 +93,51 @@ function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       // initialRouteName="TabOne"
-      tabBarOptions={{
-        showLabel: false,
-      }}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        headerShown: false,
         tabBarStyle: {
-          // showLabel: false,
           position: 'absolute',
-          bottom: 25,
-          left: 20,
-          right: 20,
-          elevation: 0,
-          backgroundColor: '#ffffff',
-          borderRadius: 15,
-          height: 70,
-          // borderColor: 'black'
+          height: 60,
+          bottom: 16,
+          right: 16,
+          left: 16,
+          borderRadius: 20,
         }
       }}
+      // tabBarOptions={{
+      //   showLabel: false,
+      // }}
+      // screenOptions={{
+      //   tabBarActiveTintColor: Colors[colorScheme].tint,
+      //   tabBarStyle: {
+      //     // showLabel: false,
+      //     position: 'absolute',
+      //     bottom: 25,
+      //     left: 20,
+      //     right: 20,
+      //     elevation: 0,
+      //     backgroundColor: '#ffffff',
+      //     borderRadius: 15,
+      //     height: 70,
+      //     // borderColor: 'black'
+      //   }
+      // }}
       >
-      <BottomTab.Screen
+        {BottomTabArr.map((item, index) => {
+          return(
+            <BottomTab.Screen name={item.route} component={item.component}
+            options={{
+              // tabBarShowLabel: item.label,
+              tabBarIcon: ({color, focused}) => (
+                <Icon name={focused ? item.activeIcon : item.inActiveIcon} color={color}
+                />
+              ),
+              tabBarButton: (props) => <TabButton {...props} item={item} />
+            }}
+          />
+          )
+        })}
+      {/* <BottomTab.Screen
         name="Search"
         component={SearchScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
@@ -111,6 +161,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Home"
+
         component={HomeScreen}
         options={{
           title: 'Home',
@@ -124,11 +175,18 @@ function BottomTabNavigator() {
           title: 'Portfolio',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
-      />
+      /> */}
     </BottomTab.Navigator>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+});
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
