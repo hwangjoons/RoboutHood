@@ -7,10 +7,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ColorSchemeName, Pressable, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
-import Colors from '../constants/Colors';
+// import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -25,7 +25,8 @@ import LinkingConfiguration from './LinkingConfiguration';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import GlobalColors from '../assets/styling/GlobalColors';
+import { GlobalColors } from '../assets/styling/GlobalColors';
+import * as Animatable from 'react-native-animatable';
 
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -75,14 +76,33 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 const TabButton = (props) => {
   const {item, onPress, accessibilityState} = props;
   const focused = accessibilityState.selected;
+  const viewRef = useRef(null);
+
+  React.useEffect(() => {
+    if (focused) {
+      viewRef.current.animate({
+        0: { scale: 1, rotate: '0deg' },
+        1: { scale: 1.5, rotate: '360deg' }
+      });
+    } else {
+      viewRef.current.animate({
+        0: { scale: 1.5, rotate: '360deg' },
+        1: { scale: 1, rotate: '0deg' }
+      });
+    }
+  }, [focused])
   return (
     <TouchableOpacity
       onPress={onPress}
+      activeOpacity={1}
       style={styles.container}
     >
-    <View style={styles.container}>
-      <Icon type={item.type} name={item.activeIcon} color={focused ? Colors.primary : Colors.primaryLite}/>
-    </View>
+    <Animatable.View
+    ref={viewRef}
+    duration={2000}
+    style={styles.container}>
+      <Icon type={item.type} name={item.activeIcon} color={focused ? GlobalColors.primary : GlobalColors.white }/>
+    </Animatable.View>
     </TouchableOpacity>
   )
 }
