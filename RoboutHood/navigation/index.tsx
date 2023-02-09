@@ -81,13 +81,13 @@ const TabButton = (props) => {
   React.useEffect(() => {
     if (focused) {
       viewRef.current.animate({
-        0: { scale: 1, rotate: '0deg' },
+        0: { scale: 3, rotate: '0deg' },
         1: { scale: 1.5, rotate: '360deg' }
       });
     } else {
       viewRef.current.animate({
-        0: { scale: 1.5, rotate: '360deg' },
-        1: { scale: 1, rotate: '0deg' }
+        0: { scale: 3, rotate: '360deg' },
+        1: { scale: 1.5, rotate: '0deg' }
       });
     }
   }, [focused])
@@ -157,45 +157,6 @@ function BottomTabNavigator() {
           />
           )
         })}
-      {/* <BottomTab.Screen
-        name="Search"
-        component={SearchScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Search',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
-      />
-      <BottomTab.Screen
-        name="Home"
-
-        component={HomeScreen}
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="Portfolio"
-        component={PortfolioScreen}
-        options={{
-          title: 'Portfolio',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      /> */}
     </BottomTab.Navigator>
   );
 }
@@ -210,9 +171,9 @@ const styles = StyleSheet.create({
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
-}
+// function TabBarIcon(props: {
+//   name: React.ComponentProps<typeof FontAwesome>['name'];
+//   color: string;
+// }) {
+//   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+// }
