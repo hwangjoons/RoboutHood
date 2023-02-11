@@ -2,11 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 
-export default function RememberButton({navigate}) {
+export default function RememberButton({navigate, search, stockTicker, stockIndustry, stockPrice}) {
+
+  // console.log(search, stockTicker, stockIndustry, stockPrice, 'in RemeemberButton');
+
+  const rememberStock = () => {
+    console.log(search, stockTicker, stockIndustry, stockPrice, 'in RemeemberButton');
+  }
   return(
     <View style={styles.buttons}>
     <TouchableOpacity
       title="Favorite"
+      onPress={rememberStock}
     >
       <Text style={styles.button}>Favorite</Text>
     </TouchableOpacity>

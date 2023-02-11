@@ -22,6 +22,7 @@ export default function ResultScreen({ navigation: { navigate }, route: { params
 
   useEffect(() => {
     // console.log(search[0].text, 'in resultscreen');
+    // console.log(search, stockTicker, stockIndustry, stockPrice);
     setGenerateResult(search[0].text);
   }, [search])
 
@@ -33,7 +34,7 @@ export default function ResultScreen({ navigation: { navigate }, route: { params
           <Text style={styles.title}>{generateResult ? generateResult : null}</Text>
         </View>
         <Separator />
-        <RememberButton navigate={navigate} />
+        <RememberButton search={search} stockTicker={stockTicker} stockIndustry={stockIndustry} stockPrice={stockPrice} navigate={navigate} />
         {/* <View style={styles.buttons}>
           <TouchableOpacity
             title="Favorite"
