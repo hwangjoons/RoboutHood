@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
-import Lottie from 'lottie-react-native';
+// import Lottie from 'lottie-react-native';
 
 import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 import { Text, View } from '../components/Themed';
+
+import RememberButton from './Buttons/RememberButton';
+
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -30,7 +33,8 @@ export default function ResultScreen({ navigation: { navigate }, route: { params
           <Text style={styles.title}>{generateResult ? generateResult : null}</Text>
         </View>
         <Separator />
-        <View style={styles.buttons}>
+        <RememberButton navigate={navigate} />
+        {/* <View style={styles.buttons}>
           <TouchableOpacity
             title="Favorite"
           >
@@ -42,7 +46,7 @@ export default function ResultScreen({ navigation: { navigate }, route: { params
           >
             <Text style={styles.button}>Search Again</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     </TouchableWithoutFeedback>
   );
