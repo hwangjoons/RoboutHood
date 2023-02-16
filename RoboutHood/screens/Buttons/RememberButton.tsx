@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
@@ -6,9 +7,20 @@ export default function RememberButton({navigate, search, stockTicker, stockIndu
 
   // console.log(search, stockTicker, stockIndustry, stockPrice, 'in RemeemberButton');
 
-  const rememberStock = () => {
-    console.log(search, stockTicker, stockIndustry, stockPrice, 'in RemeemberButton');
+  const rememberStock = async (search, stockTicker, stockIndustry, stockPrice) => {
+    // console.log(search, stockTicker, stockIndustry, stockPrice, 'in RememberButton');
+    try {
+          console.log(search, stockTicker, stockIndustry, stockPrice, 'in RememberButton');
+      const rememberResult = await axios.post(`http://192.168.1.159:3003/stocks/add`, {
+        ticker: stockTicker,
+        industry: stockIndustry,
+        price: stockPrice
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   return(
     <View style={styles.buttons}>
     <TouchableOpacity

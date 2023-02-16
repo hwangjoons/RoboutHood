@@ -7,7 +7,7 @@ import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-na
 
 import { Text, View } from '../components/Themed';
 
-import RememberButton from './Buttons/RememberButton';
+// import RememberButton from './Buttons/RememberButton';
 
 
 const Separator = () => <View style={styles.separator} />;
@@ -22,10 +22,23 @@ export default function ResultScreen({ navigation: { navigate }, route: { params
 
   useEffect(() => {
     // console.log(search[0].text, 'in resultscreen');
-    // console.log(search, stockTicker, stockIndustry, stockPrice);
+    // console.log(search, stockTicker, stockIndustry, stockPrice, 'in resultscreen');
     setGenerateResult(search[0].text);
   }, [search])
 
+  const favoriteRec = async () => {
+    try {
+      // console.log(search, stockTicker, stockIndustry, stockPrice, 'in resultscreen');
+      const rememberResult = await axios.post(`http://192.168.1.159:3003/stocks/add`, {
+        search: search,
+        ticker: stockTicker,
+        industry: stockIndustry,
+        price: stockPrice
+      })
+    } catch (error) {
+      console.log(error, 'in resultScreen')
+    }
+  }
 
   return (
     <TouchableWithoutFeedback>
@@ -34,10 +47,11 @@ export default function ResultScreen({ navigation: { navigate }, route: { params
           <Text style={styles.title}>{generateResult ? generateResult : null}</Text>
         </View>
         <Separator />
-        <RememberButton search={search} stockTicker={stockTicker} stockIndustry={stockIndustry} stockPrice={stockPrice} navigate={navigate} />
-        {/* <View style={styles.buttons}>
+        {/* <RememberButton search={search} stockTicker={stockTicker} stockIndustry={stockIndustry} stockPrice={stockPrice} navigate={navigate} /> */}
+        <View style={styles.buttons}>
           <TouchableOpacity
             title="Favorite"
+            onPress={favoriteRec}
           >
             <Text style={styles.button}>Favorite</Text>
           </TouchableOpacity>
@@ -47,7 +61,7 @@ export default function ResultScreen({ navigation: { navigate }, route: { params
           >
             <Text style={styles.button}>Search Again</Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
