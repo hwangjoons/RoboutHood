@@ -41,7 +41,9 @@ let addStock = async (req, res) => {
         }
       );
       await addStock.save();
-      res.status(201).send('Stock has saved');
+      res.status(201).json({
+        name: companyName
+      });
     } catch (err) {
       console.log(err);
     }
