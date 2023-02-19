@@ -15,11 +15,7 @@ let getAllStocks = async (req, res) => {
 };
 
 let addStock = async (req, res) => {
-  // console.log(req, 'in helpers');
     try {
-      // console.log(req.body, 'in helpers');
-      // console.log(req.body.search[0].text, req.body.ticker, req.body.industry, req.body.price);
-
       let str = req.body.search[0].text;
 
       const tickerIndex = str.indexOf("Ticker:");
@@ -29,28 +25,9 @@ let addStock = async (req, res) => {
       const stockTicker = str.substring(tickerIndex + 8, explanationIndex).trim();
       const explanation = str.substring(explanationIndex + 31).trim();
 
-      console.log('1', companyName, '2', stockTicker, '3', explanation, '123');
-      // while (i <= req.body.search[0].text.length) {
-      //   let str = req.body.search[0].text;
-      //   let currLetter = req.body.search[0].text[i];
-      //   let nextLetter = req.body.search[0].text[i + 1];
-      //   console.log('inside while loop', str, currLetter, nextLetter, i);
+      // console.log('1', companyName, '2', stockTicker, '3', explanation, '123');
 
-      //   if (currLetter === '\\' && nextLetter === 'n') {
-      //     if (str.slice(i + 2, i + 15) === 'Name of Stock: ') {
-      //       let start = i + 16;
-      //       console.log(start, 'start letter');
-      //       while (str[start] !== '\\') {
-      //         console.log('l36', companyName, str[start]);
-      //         companyName = companyName + str[start];
-      //         start++;
-      //       }
-      //     }
-      //   }
-      //   i++;
-      // }
-
-      console.log('1', companyName, 'line 39 of helpers');
+      // console.log('1', companyName, 'line 39 of helpers');
       const addStock = new Stock (
         {
           ticker: req.body.ticker,
@@ -60,6 +37,7 @@ let addStock = async (req, res) => {
           recommendTicker: stockTicker,
           recommendExplanation: explanation,
           reasoning: req.body.search[0].text,
+          record: false,
         }
       );
       await addStock.save();
