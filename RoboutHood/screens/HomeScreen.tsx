@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { RefreshControl, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
-import EditScreenInfo from '../components/EditScreenInfo';
+
 import { Text, View } from '../components/Themed';
 import { GlobalColors } from '../assets/styling/GlobalColors';
 import { useIsFocused } from "@react-navigation/native";
@@ -36,6 +37,15 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
     })
   }
 
+  const removeRec = async (item) => {
+    try {
+      const deleted = await axios.delete(`http://192.168.1.159:3003/stocks/${item._id}`);
+      refreshData();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     refreshData();
   }, [isFocused]);
@@ -59,7 +69,6 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
           style={styles.input}
         />
         <TouchableOpacity onPress={handleAddTicker}> */}
-
         <TouchableOpacity>
           <Text style={styles.button}>Add</Text>
         </TouchableOpacity>
@@ -74,12 +83,18 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
               refreshData();
               setRefreshing(false);
             }}
-            />
-        }>
+          />
+        }
+      >
         {watchlist.map((item, index) => (
-          <Text key={index} style={styles.watchlistItem} onPress={() => pressedRec(item)}>
-            {item['recommendStock']}
-          </Text>
+          <View key={index} style={[styles.watchlistItemContainer, { justifyContent: 'space-between' }]}>
+            <Text style={styles.watchlistItem} onPress={() => pressedRec(item)}>
+              {item['recommendStock']}
+            </Text>
+            <TouchableOpacity style={[styles.watchlistItemIcon, styles.trashCan]} onPress={() => removeRec(item)}>
+              <AntDesign name="delete" size={24} color={GlobalColors.primary} />
+            </TouchableOpacity>
+          </View>
         ))}
       </ScrollView>
     </View>
@@ -126,23 +141,42 @@ const styles = StyleSheet.create({
   },
   watchlistContainer: {
     borderWidth: 1,
-    // borderColor: GlobalColors.black,
-    // backgroundColor: GlobalColors.primary,
     borderColor: GlobalColors.primary,
     backgroundColor: GlobalColors.black,
     borderRadius: 4,
     padding: 8,
     paddingBottom: 10,
-    marginBottom: 80
+    marginBottom: 80,
+  },
+  watchlistItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: GlobalColors.black,
+    borderRadius: 8,
+    borderColor: GlobalColors.primary,
+    borderWidth: 1,
+    // padding: 5,
   },
   watchlistItem: {
     fontSize: 18,
-    marginBottom: 10,
-    borderRadius: 5,
+    marginBottom: 5,
+    // borderRadius: 5,
     borderColor: GlobalColors.primary,
-    borderWidth: 1,
+    // borderWidth: 1,
     padding: 5,
     color: GlobalColors.primary,
-    // backgroundColor: GlobalColors.secondary,
+    flex: 1,
+  },
+  watchlistItemIcon: {
+    fontSize: 18,
+    marginBottom: 5,
+    borderColor: GlobalColors.primary,
+    padding: 5,
+    color: GlobalColors.primary,
+    alignContent: 'center'
+  },
+  trashCan: {
+    alignSelf: 'flex-end',
   },
 });

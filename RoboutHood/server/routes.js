@@ -9,5 +9,6 @@ router.get('/', helpers.getAllAdvice);
 router.get('/getone', helpers.getOne);
 router.post('/add', helpers.addAdvice);
 router.put('/favorite', helpers.favoriteAdvice);
+router.delete('/:id', helpers.deleteAdvice);
 export default router;
 // module.exports = router;

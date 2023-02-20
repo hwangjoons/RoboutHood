@@ -78,20 +78,26 @@ let favoriteAdvice = async (req, res) => {
         {record:{$eq:[false,"$record"]}}
       }]
     );
-
-    // console.log(current, 'line 50 helpers');
-    // const current2 = await Stock.findOne(
-    //   {
-    //     _id: req.body._id
-    //   }
-    // );
     res.status(200).send(!recordStatus)
   } catch (error) {
     res.status(500).send({ error });
   }
 };
 
-export { getAllAdvice, getOne, addAdvice, favoriteAdvice };
+let deleteAdvice = async (req, res) => {
+  try {
+    console.log(req.params, '1222')
+    const deleted = await Stock.deleteMany(
+      {_id: req.params.id},
+    );
+    console.log(deleted);
+    res.status(200).send({ deleted })
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+};
+
+export { getAllAdvice, getOne, addAdvice, favoriteAdvice, deleteAdvice };
 // module.exports = {
 //   getAllStocks : async (req, res) => {
 //     try {
