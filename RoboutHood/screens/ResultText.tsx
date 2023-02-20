@@ -8,45 +8,49 @@ import { GlobalColors } from '../assets/styling/GlobalColors';
 
 export default function ResultText(props) {
   const search = props.searchRes[0].text;
+
+  const tickerIndex = search.indexOf("Ticker:");
+  const explanationIndex = search.indexOf("Explanation for Recommendation:");
+
+  const companyName = search.substring(16, tickerIndex).trim();
+  const stockTicker = search.substring(tickerIndex + 8, explanationIndex).trim();
+  const explanation = search.substring(explanationIndex + 31).trim();
   return (
-    <Text>
-      {search}
-    </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>{companyName}</Text>
+      <Text style={styles.subtitle}>Ticker: {stockTicker}</Text>
+      <View style={styles.scrollContainer}>
+        <Text style={styles.explanation}>{explanation}</Text>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 24,
-  },
-  smallContainer: {
-    flex: 1,
-    flexDirection: "column",
+    backgroundColor: GlobalColors.primary,
+    borderRadius: 10,
+    padding: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
-  buttons: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  button: {
-    marginLeft: 40,
-    marginRight: 40,
-    backgroundColor: GlobalColors.primary,
-    borderRadius: 5,
-    padding: 10,
+  subtitle: {
+    fontSize: 18,
+    fontWeight: "bold",
     color: GlobalColors.black,
-    fontWeight: 'bold',
+    marginBottom: 20,
   },
-  recordButton: {
-    justifyContent: "center"
+  scrollContainer: {
+    maxHeight: 150,
+    overflow: "scroll",
   },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+  explanation: {
+    fontSize: 16,
+    lineHeight: 24,
+    backgroundColor: GlobalColors.primary,
+    color: GlobalColors.black,
   },
 });
