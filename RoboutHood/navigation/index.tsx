@@ -19,6 +19,7 @@ import HomeScreen from '../screens/HomeScreen';
 import PortfolioScreen from '../screens/PortfolioScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import ResultScreen from '../screens/ResultScreen';
+import DetailScreen from '../screens/DetailScreen';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -54,6 +55,7 @@ function RootNavigator() {
       <Stack.Screen name="Loading" component={LoadingScreen} options={{ title: 'Loading' }} />
       <Stack.Screen name="Result" component={ResultScreen} options={{ title: 'Result' }} />
       <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
+      <Stack.Screen name="Details" component={DetailScreen} options={{ title: 'Details' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>

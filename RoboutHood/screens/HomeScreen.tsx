@@ -5,7 +5,7 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { GlobalColors } from '../assets/styling/GlobalColors';
 
-export default function HomeScreen({route: { params }}) {
+export default function HomeScreen({ navigation: { navigate}, route: { params }}) {
   const database = params.database;
 
   const [ticker, setTicker] = useState('');
@@ -17,6 +17,19 @@ export default function HomeScreen({route: { params }}) {
   //     setTicker('');
   //   }
   // };
+
+  const pressedRec = (item) => {
+    navigate("Details", {
+      ticker: item.ticker,
+      industry: item.industry,
+      price: item.price,
+      date: item.date,
+      recommendStock: item.recommendStock,
+      recommendTicker: item.recommendTicker,
+      recommendExplanation: item.recommendExplanation,
+      record: item.record,
+    })
+  }
 
   useEffect(() => {
     console.log(database, 'in the database');
@@ -40,7 +53,7 @@ export default function HomeScreen({route: { params }}) {
       </View>
       <ScrollView style={styles.watchlistContainer}>
         {watchlist.map((item, index) => (
-          <Text key={index} style={styles.watchlistItem}>
+          <Text key={index} style={styles.watchlistItem} onPress={() => pressedRec(item)}>
             {item['recommendStock']}
           </Text>
         ))}
