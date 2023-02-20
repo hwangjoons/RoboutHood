@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { GlobalColors } from '../assets/styling/GlobalColors';
 
 export default function HomeScreen({route: { params }}) {
   const database = params.database;
@@ -37,13 +38,13 @@ export default function HomeScreen({route: { params }}) {
           <Text style={styles.button}>Add</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.watchlistContainer}>
+      <ScrollView style={styles.watchlistContainer}>
         {watchlist.map((item, index) => (
           <Text key={index} style={styles.watchlistItem}>
             {item['recommendStock']}
           </Text>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: GlobalColors.primary,
     marginTop: 16,
     marginBottom: 16,
   },
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: GlobalColors.primary,
     color: '#fff',
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -88,12 +90,21 @@ const styles = StyleSheet.create({
   },
   watchlistContainer: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: GlobalColors.black,
+    backgroundColor: GlobalColors.primary,
     borderRadius: 4,
     padding: 8,
+    paddingBottom: 10,
+    // height: 30,
+    marginBottom: 80
   },
   watchlistItem: {
     fontSize: 18,
-    marginBottom: 8,
+    marginBottom: 10,
+    borderRadius: 5,
+    borderColor: GlobalColors.black,
+    borderWidth: 1,
+    padding: 5,
+    // backgroundColor: GlobalColors.secondary,
   },
 });
