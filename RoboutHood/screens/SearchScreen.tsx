@@ -7,9 +7,7 @@ import { RootTabScreenProps } from '../types';
 
 import Lottie from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
-
 import axios from 'axios';
-
 
 export default function SearchScreen({ navigation: { navigate } }: RootTabScreenProps<'TabOne'>) {
   const [stockInput, setStockInput] = useState('');
@@ -27,6 +25,20 @@ export default function SearchScreen({ navigation: { navigate } }: RootTabScreen
       })
     }
   };
+
+  const initializeRecorded = async () => {
+    try {
+      const getRecorded = await axios.get(`http://192.168.1.159:3003/stocks`);
+      navigate("Home", {
+        database: getRecorded.data
+      })
+    } catch (error) {
+      console.log('error in getAllStocks')
+    }
+  }
+  useEffect(() => {
+    initializeRecorded();
+  }, []);
 
   const defaultOptions = {
     loop: true,

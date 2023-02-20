@@ -6,7 +6,7 @@ import Stock from './models/stocks.js';
 let getAllStocks = async (req, res) => {
     try {
       const response = await Stock.find();
-      res.status(200).send(response);
+      res.status(200).json(response);
       res.end();
     } catch (err) {
       console.log(err);
