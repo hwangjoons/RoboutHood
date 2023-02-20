@@ -20,6 +20,7 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
 
   const pressedRec = (item) => {
     navigate("Details", {
+      id: item._id,
       ticker: item.ticker,
       industry: item.industry,
       price: item.price,
@@ -102,8 +103,10 @@ const styles = StyleSheet.create({
   },
   watchlistContainer: {
     borderWidth: 1,
-    borderColor: GlobalColors.black,
-    backgroundColor: GlobalColors.primary,
+    // borderColor: GlobalColors.black,
+    // backgroundColor: GlobalColors.primary,
+    borderColor: GlobalColors.primary,
+    backgroundColor: GlobalColors.black,
     borderRadius: 4,
     padding: 8,
     paddingBottom: 10,
@@ -113,9 +116,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     borderRadius: 5,
-    borderColor: GlobalColors.black,
+    borderColor: GlobalColors.primary,
     borderWidth: 1,
     padding: 5,
+    color: GlobalColors.primary,
     // backgroundColor: GlobalColors.secondary,
   },
 });

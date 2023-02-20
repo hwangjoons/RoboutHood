@@ -2,19 +2,22 @@ import axios from 'axios';
 // const axios = require('axios');
 import Stock from './models/stocks.js';
 
+// interface Stock {
+//   _id: String;
+//   record: Boolean;
+// }
 // const Stock = require('./models/stocks.js');
-let getAllStocks = async (req, res) => {
+let getAllAdvice = async (req, res) => {
     try {
       const response = await Stock.find();
       res.status(200).json(response);
       res.end();
     } catch (err) {
-      console.log(err);
       res.status(500).send({ err });
     }
 };
 
-let addStock = async (req, res) => {
+let addAdvice = async (req, res) => {
     try {
       let str = req.body.search[0].text;
 
@@ -25,9 +28,6 @@ let addStock = async (req, res) => {
       const stockTicker = str.substring(tickerIndex + 8, explanationIndex).trim();
       const explanation = str.substring(explanationIndex + 31).trim();
 
-      // console.log('1', companyName, '2', stockTicker, '3', explanation, '123');
-
-      // console.log('1', companyName, 'line 39 of helpers');
       const addStock = new Stock (
         {
           ticker: req.body.ticker,
@@ -44,12 +44,40 @@ let addStock = async (req, res) => {
       res.status(201).json({
         name: companyName
       });
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      res.status(500).send({ error });
     }
 };
 
-export { getAllStocks, addStock };
+
+let favoriteAdvice = async (req, res) => {
+  try {
+    const current = await Stock.findOne(
+      {
+        _id: req.body._id
+      }
+    );
+    const recordStatus = current.record;
+    const updated = await Stock.findOneAndUpdate(
+      {_id: req.body._id},
+      [{$set:
+        {record:{$eq:[false,"$record"]}}
+      }]
+    );
+
+    console.log(current, 'line 50 helpers');
+    // const current2 = await Stock.findOne(
+    //   {
+    //     _id: req.body._id
+    //   }
+    // );
+    res.status(200).send(!recordStatus)
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+};
+
+export { getAllAdvice, addAdvice, favoriteAdvice };
 // module.exports = {
 //   getAllStocks : async (req, res) => {
 //     try {

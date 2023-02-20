@@ -5,7 +5,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Text, View } from '../components/Themed';
 import { GlobalColors } from '../assets/styling/GlobalColors';
 
+import axios from 'axios';
+
 export default function DetailScreen({route: { params }}) {
+  const id = params.id;
   const ticker = params.ticker;
   const industry = params.industry;
   const price = params.price;
@@ -17,8 +20,17 @@ export default function DetailScreen({route: { params }}) {
 
   const [isFavorite, setIsFavorite] = useState(record);
 
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
+  const toggleFavorite = async (id) => {
+    try {
+      console.log(id, 'test');
+      const favoriteAdvice = await axios.put(`http://192.168.1.159:3003/stocks/favorite`, {
+        _id: id
+      })
+      console.log('after click', favoriteAdvice.data)
+      setIsFavorite(favoriteAdvice.data);
+    } catch (error) {
+      console.log('error favoriting')
+    }
   };
 
   return (
@@ -37,7 +49,7 @@ export default function DetailScreen({route: { params }}) {
           </Text>
         </View>
         <TouchableOpacity>
-          <FontAwesome name={isFavorite ? 'star' : 'star-o'} size={24} color={GlobalColors.secondary} style={styles.favoriteIcon} onPress={toggleFavorite}/>
+          <FontAwesome name={isFavorite ? 'star' : 'star-o'} size={24} color={GlobalColors.secondary} style={styles.favoriteIcon} onPress={() => toggleFavorite(id)}/>
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.watchlistContainer}>
