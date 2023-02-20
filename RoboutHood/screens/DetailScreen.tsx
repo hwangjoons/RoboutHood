@@ -58,15 +58,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: GlobalColors.black,
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
+    backgroundColor: GlobalColors.black,
   },
   titleContent: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: GlobalColors.black,
   },
   titleText: {
     fontSize: 25,
@@ -81,16 +84,20 @@ const styles = StyleSheet.create({
   stockName: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: GlobalColors.black,
-    backgroundColor: GlobalColors.primary,
+    // color: GlobalColors.black,
+    // backgroundColor: GlobalColors.primary,
+    color: GlobalColors.primary,
+    backgroundColor: GlobalColors.black,
   },
   favoriteIcon: {
     marginLeft: 8,
   },
   watchlistContainer: {
     borderWidth: 1,
-    borderColor: GlobalColors.black,
-    backgroundColor: GlobalColors.primary,
+    borderColor: GlobalColors.primary,
+    backgroundColor: GlobalColors.black,
+    // borderColor: GlobalColors.black,
+    // backgroundColor: GlobalColors.primary,
     borderRadius: 4,
     padding: 8,
     paddingBottom: 10,
@@ -101,6 +108,6 @@ const styles = StyleSheet.create({
   },
   explanationText: {
     fontSize: 16,
-    color: GlobalColors.dark,
+    color: GlobalColors.primary,
   },
 });

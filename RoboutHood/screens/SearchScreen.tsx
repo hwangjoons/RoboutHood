@@ -9,6 +9,8 @@ import Lottie from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import axios from 'axios';
 
+import { GlobalColors } from '../assets/styling/GlobalColors';
+
 export default function SearchScreen({ navigation: { navigate } }: RootTabScreenProps<'TabOne'>) {
   const [stockInput, setStockInput] = useState('');
   const [industryInput, setIndustryInput] = useState('');
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: GlobalColors.black,
   },
   formContainer: {
     // height: 100,

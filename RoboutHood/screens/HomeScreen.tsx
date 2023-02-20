@@ -66,8 +66,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    backgroundColor: GlobalColors.black,
   },
   title: {
     fontSize: 24,
@@ -108,7 +107,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     paddingBottom: 10,
-    // height: 30,
     marginBottom: 80
   },
   watchlistItem: {
