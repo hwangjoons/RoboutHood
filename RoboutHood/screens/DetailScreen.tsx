@@ -20,14 +20,22 @@ export default function DetailScreen({route: { params }}) {
 
   const [isFavorite, setIsFavorite] = useState(record);
 
+  // useEffect(() => {
+
+  // }, [])
   const toggleFavorite = async (id) => {
     try {
       console.log(id, 'test');
       const favoriteAdvice = await axios.put(`http://192.168.1.159:3003/stocks/favorite`, {
         _id: id
       })
-      console.log('after click', favoriteAdvice.data)
-      setIsFavorite(favoriteAdvice.data);
+      console.log('after click', favoriteAdvice.data);
+      const getAdvice = await axios.get(`http://192.168.1.159:3003/stocks/getone`, {
+        params: {
+          _id: id
+        }
+      })
+      setIsFavorite(!!getAdvice.data.record);
     } catch (error) {
       console.log('error favoriting')
     }

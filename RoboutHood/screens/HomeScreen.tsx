@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { RefreshControl, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { GlobalColors } from '../assets/styling/GlobalColors';
+import { useIsFocused } from "@react-navigation/native";
+
+import axios from 'axios';
 
 export default function HomeScreen({ navigation: { navigate}, route: { params }}) {
+  const isFocused = useIsFocused();
   const database = params.database;
 
   const [ticker, setTicker] = useState('');
   const [watchlist, setWatchlist] = useState(database);
-
+  const [refreshing, setRefreshing] = useState(false);
   // const handleAddTicker = () => {
   //   if (ticker.trim() !== '') {
   //     setWatchlist([...watchlist, ticker.trim()]);
@@ -33,9 +37,17 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
   }
 
   useEffect(() => {
-    console.log(database, 'in the database');
-  });
+    refreshData();
+  }, [isFocused]);
 
+  const refreshData = async () => {
+    try {
+      const getRecorded = await axios.get(`http://192.168.1.159:3003/stocks`);
+      setWatchlist(getRecorded.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.title}>My Watchlist</Text>
@@ -52,7 +64,18 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
           <Text style={styles.button}>Add</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.watchlistContainer}>
+      <ScrollView
+        style={styles.watchlistContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              refreshData();
+              setRefreshing(false);
+            }}
+            />
+        }>
         {watchlist.map((item, index) => (
           <Text key={index} style={styles.watchlistItem} onPress={() => pressedRec(item)}>
             {item['recommendStock']}

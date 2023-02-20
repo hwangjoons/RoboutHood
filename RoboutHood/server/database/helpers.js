@@ -12,9 +12,23 @@ let getAllAdvice = async (req, res) => {
       const response = await Stock.find();
       res.status(200).json(response);
       res.end();
-    } catch (err) {
-      res.status(500).send({ err });
+    } catch (error) {
+      res.status(500).send({ error });
     }
+};
+
+let getOne = async (req, res) => {
+  try {
+    console.log(req.query._id, 'line 22');
+    const response = await Stock.findOne(
+      {
+        _id: req.query._id
+      }
+    );
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).send({ error });
+  }
 };
 
 let addAdvice = async (req, res) => {
@@ -65,7 +79,7 @@ let favoriteAdvice = async (req, res) => {
       }]
     );
 
-    console.log(current, 'line 50 helpers');
+    // console.log(current, 'line 50 helpers');
     // const current2 = await Stock.findOne(
     //   {
     //     _id: req.body._id
@@ -77,7 +91,7 @@ let favoriteAdvice = async (req, res) => {
   }
 };
 
-export { getAllAdvice, addAdvice, favoriteAdvice };
+export { getAllAdvice, getOne, addAdvice, favoriteAdvice };
 // module.exports = {
 //   getAllStocks : async (req, res) => {
 //     try {
