@@ -21,14 +21,16 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
 
 
   const handleSearchAdvice = () => {
-    console.log('1');
-    if (searchQuery.trim() !== '') {
-      const filteredWatchlist = searchTemp.filter(item => item['recommendStock'].toLowerCase().includes(searchQuery.toLowerCase()));
+    console.log(searchQuery);
+    if (searchQuery.trim().length > 1) {
+      const filteredWatchlist = watchlist.filter(item => item['recommendStock'].toLowerCase().includes(searchQuery.toLowerCase()));
       setWatchlist(filteredWatchlist);
     } else {
+      // console.log('in else', searchTemp)
       setWatchlist(searchTemp);
     }
   };
+
 
   function pressedRec(item) {
     navigate("Details", {
@@ -79,11 +81,14 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
             placeholder="Search Stock Advice..."
             placeholderTextColor={GlobalColors.primary}
             value={searchQuery}
-            onChangeText={(text) => setSearchQuery(text)}
+            onChangeText={(text) => {
+              setSearchQuery(text);
+              handleSearchAdvice();
+            }}
             style={styles.input}
           />
-          <TouchableOpacity onPress={() => handleSearchAdvice(search)} />
-          <TouchableOpacity>
+          {/* <TouchableOpacity onPress={() => handleSearchAdvice(search)} /> */}
+          <TouchableOpacity onPress={handleSearchAdvice}>
             <Text style={styles.button}>Search</Text>
           </TouchableOpacity>
         </View>
