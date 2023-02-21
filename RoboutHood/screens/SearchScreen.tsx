@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: '#83f28f',
-    borderRadius: 10,
+    borderRadius: 4,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.7,
     shadowRadius: 1,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshControl, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { TextInput, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
 
@@ -13,17 +13,24 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
   const isFocused = useIsFocused();
   const database = params.database;
 
-  const [ticker, setTicker] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [watchlist, setWatchlist] = useState(database);
-  const [refreshing, setRefreshing] = useState(false);
-  // const handleAddTicker = () => {
-  //   if (ticker.trim() !== '') {
-  //     setWatchlist([...watchlist, ticker.trim()]);
-  //     setTicker('');
-  //   }
-  // };
+  const [searchTemp, setSearchTemp] = useState(database);
 
-  const pressedRec = (item) => {
+  const [refreshing, setRefreshing] = useState(false);
+
+
+  const handleSearchAdvice = () => {
+    console.log('1');
+    if (searchQuery.trim() !== '') {
+      const filteredWatchlist = searchTemp.filter(item => item['recommendStock'].toLowerCase().includes(searchQuery.toLowerCase()));
+      setWatchlist(filteredWatchlist);
+    } else {
+      setWatchlist(searchTemp);
+    }
+  };
+
+  function pressedRec(item) {
     navigate("Details", {
       id: item._id,
       ticker: item.ticker,
@@ -34,7 +41,7 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
       recommendTicker: item.recommendTicker,
       recommendExplanation: item.recommendExplanation,
       record: item.record,
-    })
+    });
   }
 
   const removeRec = async (item) => {
@@ -50,54 +57,62 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
     refreshData();
   }, [isFocused]);
 
+  // useEffect(() => {
+  //   refreshData();
+  // }, [watchlist]);
+
   const refreshData = async () => {
     try {
       const getRecorded = await axios.get(`http://192.168.1.159:3003/stocks`);
       setWatchlist(getRecorded.data);
+      setSearchTemp(getRecorded.data);
     } catch (error) {
       console.log(error);
     }
   }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>My Watchlist</Text>
-      <View style={styles.inputContainer}>
-        {/* <TextInput
-          placeholder="Enter Ticker Symbol"
-          value={ticker}
-          onChangeText={(text) => setTicker(text)}
-          style={styles.input}
-        />
-        <TouchableOpacity onPress={handleAddTicker}> */}
-        <TouchableOpacity>
-          <Text style={styles.button}>Add</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView
-        style={styles.watchlistContainer}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => {
-              setRefreshing(true);
-              refreshData();
-              setRefreshing(false);
-            }}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Text style={styles.title}>My Watchlist</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Search Stock Advice..."
+            placeholderTextColor={GlobalColors.primary}
+            value={searchQuery}
+            onChangeText={(text) => setSearchQuery(text)}
+            style={styles.input}
           />
-        }
-      >
-        {watchlist.map((item, index) => (
-          <View key={index} style={[styles.watchlistItemContainer, { justifyContent: 'space-between' }]}>
-            <Text style={styles.watchlistItem} onPress={() => pressedRec(item)}>
-              {item['recommendStock']}
-            </Text>
-            <TouchableOpacity style={[styles.watchlistItemIcon, styles.trashCan]} onPress={() => removeRec(item)}>
-              <AntDesign name="delete" size={24} color={GlobalColors.primary} />
-            </TouchableOpacity>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+          <TouchableOpacity onPress={() => handleSearchAdvice(search)} />
+          <TouchableOpacity>
+            <Text style={styles.button}>Search</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView
+          style={styles.watchlistContainer}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true);
+                refreshData();
+                setRefreshing(false);
+              }}
+            />
+          }
+        >
+          {watchlist.map((item, index) => (
+            <View key={index} style={[styles.watchlistItemContainer, { justifyContent: 'space-between' }]}>
+              <Text style={styles.watchlistItem} onPress={() => pressedRec(item)}>
+                {item['recommendStock']}
+              </Text>
+              <TouchableOpacity style={[styles.watchlistItemIcon, styles.trashCan]} onPress={() => removeRec(item)}>
+                <AntDesign name="delete" size={24} color={GlobalColors.primary} />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -123,21 +138,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
+    backgroundColor: GlobalColors.black,
   },
   input: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
+    borderColor: GlobalColors.primary,
+    // borderRadius: 3,
     padding: 8,
     marginRight: 8,
+    color: GlobalColors.primary,
   },
   button: {
     backgroundColor: GlobalColors.primary,
-    color: '#fff',
+    // color: '#fff',
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: 4,
+    borderRadius: 10,
+    marginBottom: 1,
   },
   watchlistContainer: {
     borderWidth: 1,
@@ -156,6 +174,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: GlobalColors.primary,
     borderWidth: 1,
+    marginBottom: 5,
     // padding: 5,
   },
   watchlistItem: {
