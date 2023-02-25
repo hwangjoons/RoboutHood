@@ -29,7 +29,7 @@ export default function ResultScreen({ navigation: { navigate }, route: { params
         industry: stockIndustry,
         price: stockPrice
       });
-      Alert.alert('Remembered', `Saved ${rememberResult.data.name}!`,
+      Alert.alert('Remembered', `Saved ${rememberResult.data.name}`,
         [
           {
             text: 'Go back!',
@@ -72,20 +72,6 @@ export default function ResultScreen({ navigation: { navigate }, route: { params
         </View>
       </View>
     </TouchableWithoutFeedback>
-  //       React.createElement(View, { style: styles.smallContainer },
-  //         React.createElement(Text, { style: styles.title }, generateResult ? generateResult : null)
-  //       ),
-  //       React.createElement(Separator, null),
-  //       React.createElement(View, { style: styles.buttons },
-  //         React.createElement(TouchableOpacity, { title: "Favorite", onPress: favoriteRec },
-  //           React.createElement(Text, { style: styles.button }, "Favorite")
-  //         ),
-  //         React.createElement(TouchableOpacity, { title: "Cancel", onPress: () => navigate("Search") },
-  //           React.createElement(Text, { style: styles.button }, "Search Again")
-  //         )
-  //       )
-  //     )
-  //   )
   );
 }
 
@@ -93,10 +79,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+    backgroundColor: GlobalColors.black,
   },
   smallContainer: {
     flex: 1,
     flexDirection: "column",
+    backgroundColor: GlobalColors.black,
   },
   title: {
     fontSize: 20,
@@ -106,6 +94,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     borderRadius: 10,
+    backgroundColor: GlobalColors.black,
   },
   button: {
     marginLeft: 40,

@@ -34,10 +34,15 @@ export default function SearchScreen({ navigation: { navigate } }: RootTabScreen
       navigate("Home", {
         database: getRecorded.data
       })
+      const getFavs = await axios.get(`http://192.168.1.159:3003/stocks/getallfavorites`);
+      navigate("Portfolio", {
+        database: getFavs.data
+      })
     } catch (error) {
       console.log('error in getAllStocks')
     }
   }
+
   useEffect(() => {
     initializeRecorded();
   }, []);

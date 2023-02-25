@@ -59,10 +59,6 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
     refreshData();
   }, [isFocused]);
 
-  // useEffect(() => {
-  //   refreshData();
-  // }, [watchlist]);
-
   const refreshData = async () => {
     try {
       const getRecorded = await axios.get(`http://192.168.1.159:3003/stocks`);
@@ -75,7 +71,7 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <Text style={styles.title}>My Watchlist</Text>
+        <Text style={styles.title}>My Advices</Text>
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Search Stock Advice..."

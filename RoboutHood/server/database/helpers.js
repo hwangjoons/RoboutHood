@@ -31,6 +31,19 @@ let getOne = async (req, res) => {
   }
 };
 
+let getAllFavorites = async (req, res) => {
+  try {
+    const response = await Stock.find(
+      {
+        record: true
+      }
+    );
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+};
+
 let addAdvice = async (req, res) => {
     try {
       let str = req.body.search[0].text;
@@ -97,7 +110,7 @@ let deleteAdvice = async (req, res) => {
   }
 };
 
-export { getAllAdvice, getOne, addAdvice, favoriteAdvice, deleteAdvice };
+export { getAllAdvice, getOne, getAllFavorites, addAdvice, favoriteAdvice, deleteAdvice };
 // module.exports = {
 //   getAllStocks : async (req, res) => {
 //     try {

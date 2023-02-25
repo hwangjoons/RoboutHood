@@ -6,7 +6,7 @@ import Lottie from 'lottie-react-native';
 import { StyleSheet, SafeAreaView, Image } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-
+import { GlobalColors } from '../assets/styling/GlobalColors';
 import ResultScreen from './ResultScreen';
 
 export default function LoadingScreen({ navigation: { navigate }, route: { params }}) {
@@ -50,11 +50,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: "column"
+    flexDirection: "column",
+    backgroundColor: GlobalColors.black,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: GlobalColors.third,
   },
   separator: {
     marginVertical: 30,

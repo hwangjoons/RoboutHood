@@ -20,9 +20,7 @@ export default function DetailScreen({route: { params }}) {
 
   const [isFavorite, setIsFavorite] = useState(record);
 
-  // useEffect(() => {
 
-  // }, [])
   const toggleFavorite = async (id) => {
     try {
       console.log(id, 'test');
