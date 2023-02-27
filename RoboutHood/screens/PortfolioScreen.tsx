@@ -8,9 +8,13 @@ import { Text, View } from '../components/Themed';
 import { GlobalColors } from '../assets/styling/GlobalColors';
 import { useIsFocused } from "@react-navigation/native";
 
-import PortfolioItem from './PortfolioScreenDetails/PortfolioItem';
+// import PortfolioItem from './PortfolioScreenDetails/PortfolioItem';
 
-export default function HomeScreen({ navigation: { navigate}, route: { params }}) {
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
+
+export default function PortfolioScreen({ navigation: { navigate}, route: { params }}) {
   const isFocused = useIsFocused();
   const favoritesData = params.database;
 
@@ -20,9 +24,9 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
 
   const [showFilterModal, setShowFilterModal] = useState(false);
 
-  useEffect(() => {
-    console.log(favoritesData);
-  })
+  // useEffect(() => {
+  //   console.log(favoritesData);
+  // })
 
   // const [refreshing, setRefreshing] = useState(false);
 
@@ -57,6 +61,12 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
   }
 
   // useEffect(() => {
+  //   if (showFilterModal) {
+
+  //   }
+  // }, [showFilterModal])
+
+  // useEffect(() => {
   //   refreshData();
   // }, [isFocused]);
 
@@ -65,7 +75,7 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
   //     const deleted = await axios.delete(`http://192.168.1.159:3003/stocks/${item._id}`);
   //     refreshData();
   //   } catch (error) {
-  //     console.log(error);
+  //     console.log(error, );
   //   }
   // }
 
@@ -108,6 +118,14 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
           </TouchableOpacity>
         </View>
         <ScrollView style={styles.favoriteslistContainer}>
+          {/* <Stack.Navigator>
+            <Stack.Screen
+              name="PortfolioItem"
+              component={PortfolioItem}
+              initialParams={{ favoritesData: favoritesData }}
+            />
+          </Stack.Navigator> */}
+          {/* <PortfolioItem navigation={navigation} favoritesData={favoritesData} /> */}
           {favoriteslist.map((item, index) => (
               <View key={index} style={[styles.favoriteslistItemContainer, { justifyContent: 'space-between' }]}>
                 <Text style={styles.favoriteslistItem} onPress={() => pressedRec(item)}>
