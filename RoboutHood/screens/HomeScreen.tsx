@@ -68,6 +68,7 @@ export default function HomeScreen({ navigation: { navigate}, route: { params }}
       console.log(error);
     }
   }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>

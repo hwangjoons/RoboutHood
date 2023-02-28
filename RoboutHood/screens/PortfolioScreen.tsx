@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { TextInput, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard, Modal } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 
+import axios from 'axios';
 
 import { Text, View } from '../components/Themed';
 import { GlobalColors } from '../assets/styling/GlobalColors';
@@ -24,26 +25,20 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
 
   const [showFilterModal, setShowFilterModal] = useState(false);
 
-  // useEffect(() => {
-  //   console.log(favoritesData);
-  // })
+  useEffect(() => {
+    refreshData();
+  }, [isFocused]);
 
-  // const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
 
   const handleSearchAdvice = () => {
-    console.log(searchQuery);
     if (searchQuery.trim().length > 1) {
       const filteredFavoriteslist = favoriteslist.filter(item => item['recommendStock'].toLowerCase().includes(searchQuery.toLowerCase()));
       setFavoriteslist(filteredFavoriteslist);
     } else {
-      // console.log('in else', searchTemp)
       setFavoriteslist(searchTemp);
     }
-  };
-
-  const handleFilterPress = () => {
-    setShowFilterModal(true);
   };
 
   function pressedRec(item) {
@@ -70,24 +65,37 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
   //   refreshData();
   // }, [isFocused]);
 
-  // const removeRec = async (item) => {
-  //   try {
-  //     const deleted = await axios.delete(`http://192.168.1.159:3003/stocks/${item._id}`);
-  //     refreshData();
-  //   } catch (error) {
-  //     console.log(error, );
-  //   }
-  // }
+  const removeRec = async (item) => {
+    try {
+      const deleted = await axios.delete(`http://192.168.1.159:3003/stocks/${item._id}`);
+      refreshData();
+    } catch (error) {
+      console.log(error, );
+    }
+  }
 
-  // const refreshData = async () => {
-  //   try {
-  //     const getRecorded = await axios.get(`http://192.168.1.159:3003/stocks`);
-  //     setWatchlist(getRecorded.data);
-  //     setSearchTemp(getRecorded.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const refreshData = async () => {
+    try {
+      const getRecorded = await axios.get(`http://192.168.1.159:3003/stocks/getallfavorites`);
+      setFavoriteslist(getRecorded.data);
+      setSearchTemp(getRecorded.data);
+      filterByCategory(getRecorded.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const [categoryTicker, setCategoryTicker] = useState([]);
+  const [categoryIndustry, setCategoryIndustry] = useState([]);
+  const [categoryPrice, setCategoryPrice] = useState([]);
+
+  const filterByCategory = (favorites) => {
+    console.log(favorites, 'filterByCategory')
+  }
+
+  const handleFilterPress = () => {
+    setShowFilterModal(true);
+  };
 
   const handleModalClose = () => {
     setShowFilterModal(false);
@@ -117,16 +125,21 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
             <Text style={styles.button}>Search</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={styles.favoriteslistContainer}>
-          {/* <Stack.Navigator>
-            <Stack.Screen
-              name="PortfolioItem"
-              component={PortfolioItem}
-              initialParams={{ favoritesData: favoritesData }}
+        <ScrollView
+          style={styles.favoriteslistContainer}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true);
+                refreshData();
+                setRefreshing(false);
+              }}
             />
-          </Stack.Navigator> */}
-          {/* <PortfolioItem navigation={navigation} favoritesData={favoritesData} /> */}
-          {favoriteslist.map((item, index) => (
+          }
+        >
+          {favoritesData ? (
+            favoriteslist.map((item, index) => (
               <View key={index} style={[styles.favoriteslistItemContainer, { justifyContent: 'space-between' }]}>
                 <Text style={styles.favoriteslistItem} onPress={() => pressedRec(item)}>
                   {item['recommendStock']}
@@ -135,12 +148,26 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
                   <AntDesign name="delete" size={24} color={GlobalColors.primary} />
                 </TouchableOpacity>
               </View>
-            ))}
+            ))
+          ) : (
+            <Text>No data available</Text>
+          )}
         </ScrollView>
+        <Modal visible={showFilterModal} animationType="fade">
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Filter Options</Text>
+            <Text>
+              {}
+            </Text>
+            <TouchableOpacity style={styles.modalCloseButton} onPress={handleModalClose}>
+              <Text style={styles.modalCloseButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     </TouchableWithoutFeedback>
   );
-}
+};
 
   const styles = StyleSheet.create({
     container: {
@@ -233,10 +260,33 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
     paddingVertical: 8,
     marginBottom: 1,
     alignSelf: 'flex-end',
-    },
-    filterButtonText: {
+  },
+  filterButtonText: {
     color: GlobalColors.primary,
     fontSize: 16,
     fontWeight: 'bold',
-    },
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    // color: GlobalColors.primary,
+  },
+  modalCloseButton: {
+    backgroundColor: GlobalColors.primary,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 10,
+  },
+  modalCloseButtonText: {
+    color: GlobalColors.black,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
