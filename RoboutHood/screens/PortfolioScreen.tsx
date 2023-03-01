@@ -9,9 +9,19 @@ import { Text, View } from '../components/Themed';
 import { GlobalColors } from '../assets/styling/GlobalColors';
 import { useIsFocused } from "@react-navigation/native";
 
+import ToggleSwitch from './Buttons/ToggleSwitch';
+
 // import PortfolioItem from './PortfolioScreenDetails/PortfolioItem';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+interface Props {
+  showFilterModal: boolean;
+  handleModalClose: () => void;
+  categoryTicker?: any[];
+  categoryIndustry?: any[];
+  categoryPrice?: any[];
+}
 
 const Stack = createNativeStackNavigator();
 
@@ -55,16 +65,6 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
     });
   }
 
-  // useEffect(() => {
-  //   if (showFilterModal) {
-
-  //   }
-  // }, [showFilterModal])
-
-  // useEffect(() => {
-  //   refreshData();
-  // }, [isFocused]);
-
   const removeRec = async (item) => {
     try {
       const deleted = await axios.delete(`http://192.168.1.159:3003/stocks/${item._id}`);
@@ -85,12 +85,121 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
     }
   }
 
+  // useEffect(() => {
+  //   console.log(filterToggle)
+  //   console.log(filterToggle)
+  //   console.log(filterToggle)
+  // }, [filterToggle.ticker]);
+
+  const filterFunc = async () => {
+    try {
+      console.log(showTicker, '1111')
+      console.log(showIndustry, '2222')
+      console.log(showPrice, '3333')
+
+      let filteredFavoritesCopy = [...favoriteslist];
+      let filteredFavorites;
+      if (showTicker && showIndustry && showPrice) {
+        setFavoriteslist(searchTemp);
+      } else if (showTicker === false && showIndustry === false && showPrice === false ) {
+        setFavoriteslist([]);
+      } else {
+        // setFavoriteslist(searchTemp);
+        // let filteredFavoritesCopy = favoriteslist;
+        // let filteredFavorites;
+        console.log(filteredFavoritesCopy, '777');
+        if (showTicker) {
+          if (showIndustry) {
+            if (showPrice === false) {
+              filteredFavorites = filteredFavoritesCopy.filter(item => item.ticker !== undefined && item.industry !== undefined && item.price === undefined);
+              console.log(filteredFavorites, '1T 2T 3F');
+              console.log(favoriteslist, '11');
+            }
+          } else {
+            if (showPrice === false) {
+              filteredFavorites = filteredFavoritesCopy.filter(item => item.ticker !== undefined && item.industry === undefined && item.price === undefined);
+              console.log(filteredFavorites, '1T 2F 3F');
+              console.log(favoriteslist, '11');
+            } else if (showPrice) {
+              filteredFavorites = filteredFavoritesCopy.filter(item => item.ticker !== undefined && item.industry === undefined && item.price !== undefined);
+              console.log(filteredFavorites, '1T 2F 3T');
+              console.log(favoriteslist, '11');
+            }
+          }
+        } else if (showIndustry) {
+          if (showPrice) {
+            filteredFavorites = filteredFavoritesCopy.filter(item => item.industry !== undefined && item.price !== undefined && item.ticker === undefined);
+            console.log(filteredFavorites, '1F 2T 3T');
+            console.log(favoriteslist, '11');
+          } else if (showPrice === false) {
+            filteredFavorites = filteredFavoritesCopy.filter(item => item.industry !== undefined && item.price === undefined && item.ticker === undefined);
+            console.log(filteredFavorites, '1F 2T 3F');
+            console.log(favoriteslist, '11');
+          }
+        } else if (showPrice) {
+          filteredFavorites = filteredFavoritesCopy.filter(item => item.price !== undefined && item.ticker === undefined && item.industry === undefined);
+          console.log(filteredFavorites, '1F 2F 3T');
+          console.log(favoriteslist, '11');
+        }
+      }
+      setFavoriteslist(filteredFavorites);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+//  const [filterToggle, setFilterToggle] = useState({
+//     ticker: showTicker,
+//     industry: showIndustry,
+//     price: showPrice,
+//   })
+
+  // const toggleTicker = () => {
+  //   setFilterToggle(prevState => ({
+  //     ...prevState,
+  //     ticker: !prevState.ticker
+  //   }));
+  // }
+
+  // const toggleIndustry = () => {
+  //   setFilterToggle(prevState => ({
+  //     ...prevState,
+  //     industry: !prevState.industry
+  //   }));
+  // }
+
+  // const togglePrice = () => {
+  //   setFilterToggle(prevState => ({
+  //     ...prevState,
+  //     price: !prevState.price
+  //   }));
+  // }
+
   const [categoryTicker, setCategoryTicker] = useState([]);
   const [categoryIndustry, setCategoryIndustry] = useState([]);
   const [categoryPrice, setCategoryPrice] = useState([]);
 
   const filterByCategory = (favorites) => {
-    console.log(favorites, 'filterByCategory')
+    let allTickers = [];
+    let allIndustries = [];
+    let allPrices = [];
+
+    for (let i = 0; i < favorites.length; i++) {
+      let currAdvice = favorites[i];
+      if (currAdvice.ticker) {
+        allTickers.push(currAdvice)
+        /*later below can be updated if necessary, if we need to keep track of which advice has 2 or more inputs when search instead of just keeping it in order of ticker > industry > price
+        */
+      } else if (currAdvice.industry) {
+        allIndustries.push(currAdvice)
+      } else if (currAdvice.price) {
+        allPrices.push(currAdvice)
+      }
+    }
+
+    setCategoryTicker(allTickers);
+    setCategoryIndustry(allIndustries);
+    setCategoryPrice(allPrices);
   }
 
   const handleFilterPress = () => {
@@ -100,6 +209,83 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
   const handleModalClose = () => {
     setShowFilterModal(false);
   };
+
+  const [showTicker, setShowTicker] = useState(true);
+  const [showIndustry, setShowIndustry] = useState(true);
+  const [showPrice, setShowPrice] = useState(true);
+
+  const handleToggleTicker = (value) => {
+    setShowTicker(value);
+    console.log(showTicker, 'test ticker')
+    console.log(value);
+  };
+
+  const handleToggleIndustry = (value) => {
+    setShowIndustry(value);
+    console.log(showIndustry, 'test industry')
+    console.log(value);
+  };
+
+  const handleTogglePrice = (value) => {
+    setShowPrice(value);
+    console.log(showPrice, 'test price')
+    console.log(value);
+  };
+
+  useEffect(() => {
+    const filterFunc = async () => {
+      try {
+        // console.log(showTicker, '1111')
+        // console.log(showIndustry, '2222')
+        // console.log(showPrice, '3333')
+
+        let filteredFavoritesCopy = [...favoriteslist];
+        let filteredFavorites;
+        if (showTicker && showIndustry && showPrice) {
+          setFavoriteslist(searchTemp);
+        } else {
+          // setFavoriteslist(searchTemp);
+          // let filteredFavoritesCopy = favoriteslist;
+          // let filteredFavorites;
+          console.log(filteredFavoritesCopy, '777');
+          if (showTicker) {
+            if (showIndustry) {
+              if (showPrice === false) {
+                filteredFavorites = filteredFavoritesCopy.filter(item => item.ticker !== undefined && item.industry !== undefined && item.price === undefined);
+                console.log(filteredFavorites, '1T 2T 3F');
+              }
+            } else {
+              if (showPrice === false) {
+                filteredFavorites = filteredFavoritesCopy.filter(item => item.ticker !== undefined && item.industry === undefined && item.price === undefined);
+                console.log(filteredFavorites, '1T 2F 3F');
+              } else if (showPrice) {
+                filteredFavorites = filteredFavoritesCopy.filter(item => item.ticker !== undefined && item.industry === undefined && item.price !== undefined);
+                console.log(filteredFavorites, '1T 2F 3T');
+              }
+            }
+          } else if (showIndustry) {
+            if (showPrice) {
+              filteredFavorites = filteredFavoritesCopy.filter(item => item.industry !== undefined && item.price !== undefined && item.ticker === undefined);
+              console.log(filteredFavorites, '1F 2T 3T');
+            } else if (showPrice === false) {
+              filteredFavorites = filteredFavoritesCopy.filter(item => item.industry !== undefined && item.price === undefined && item.ticker === undefined);
+              console.log(filteredFavorites, '1F 2T 3F');
+            }
+          } else if (showPrice) {
+            filteredFavorites = filteredFavoritesCopy.filter(item => item.price !== undefined && item.ticker === undefined && item.industry === undefined);
+            console.log(filteredFavorites, '1F 2F 3T');
+          } else {
+            filteredFavorites = [];
+          }
+        }
+        setFavoriteslist(filteredFavorites);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    filterFunc();
+  }, [showTicker, showIndustry, showPrice]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -138,7 +324,7 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
             />
           }
         >
-          {favoritesData ? (
+          {favoriteslist ? (
             favoriteslist.map((item, index) => (
               <View key={index} style={[styles.favoriteslistItemContainer, { justifyContent: 'space-between' }]}>
                 <Text style={styles.favoriteslistItem} onPress={() => pressedRec(item)}>
@@ -150,20 +336,22 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
               </View>
             ))
           ) : (
-            <Text>No data available</Text>
+            <Text style={styles.errorMessage}>No data available</Text>
           )}
         </ScrollView>
         <Modal visible={showFilterModal} animationType="fade">
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Filter Options</Text>
-            <Text>
-              {}
-            </Text>
-            <TouchableOpacity style={styles.modalCloseButton} onPress={handleModalClose}>
-              <Text style={styles.modalCloseButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>Filter Options</Text>
+          <ToggleSwitch label="Search Keyword: Ticker" value={showTicker} onToggle={handleToggleTicker} filterToggle={showTicker} />
+          <ToggleSwitch label="Search Keyword: Industry" value={showIndustry} onToggle={handleToggleIndustry} filterToggle={showIndustry} />
+          <ToggleSwitch label="Search Keyword: Price" value={showPrice} onToggle={handleTogglePrice} filterToggle={showPrice} />
+          <TouchableOpacity onPress={handleModalClose} style={styles.modalCloseButton}>
+            <Text style={styles.modalCloseButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -268,25 +456,45 @@ export default function PortfolioScreen({ navigation: { navigate}, route: { para
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    backgroundColor: GlobalColors.black,
+  },
+  modalContent: {
+    backgroundColor: GlobalColors.black,
+    padding: 20,
+    width: '80%',
+    maxWidth: 400,
+    maxHeight: 600,
   },
   modalTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
-    // color: GlobalColors.primary,
+    marginBottom: 20,
+    color: GlobalColors.white,
+    justifyContent: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+    color: GlobalColors.secondary,
+    marginBottom: 20,
+    textAlign: 'center',
   },
   modalCloseButton: {
     backgroundColor: GlobalColors.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 10,
+    padding: 10,
+    borderRadius: 5,
   },
   modalCloseButtonText: {
-    color: GlobalColors.black,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
+    color: GlobalColors.black,
+    textAlign: 'center',
+  },
+  errorMessage: {
+    fontSize: 18,
+    color: GlobalColors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
