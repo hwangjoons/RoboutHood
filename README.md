@@ -10,12 +10,16 @@ RoboutHood is an iOS mobile app created via React Native designed to allow users
 
 # Functionalities
 
-<img src="https://media.giphy.com/media/brVUayyHzcCDt1mQLS/giphy.gif" />
+### 
+<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODZjMTI5MDQyMWNmOTViNDQ1NjQ1NzczZDEwZWYxOTIyOTI0ZDM4YyZjdD1n/O411DCzlnEdzL61nlN/giphy.gif" />
 
+### 
 <img src="https://media.giphy.com/media/5GwKOjl8YPIIfWioji/giphy.gif" />
 
+### 
 <img src="https://media.giphy.com/media/vPF9nizjpeuQTzCaiU/giphy.gif" />
 
+### 
 <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjk2N2UwN2U4NmM2YmQyZWVjZTU5NDQyMDY0OWEzZDhhNDdkM2QxNSZjdD1n/WNnNOKQ146JqomrEVk/giphy.gif" />
 
 # How to get started
